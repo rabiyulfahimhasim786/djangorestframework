@@ -7,3 +7,10 @@ class Pdf(models.Model):
 
     def __str__(self):
         return "%s %s" % (self.link, self.description)
+    
+class Outputtext(models.Model):
+    urllink = models.URLField(max_length=255)
+    urldes = models.CharField(max_length=255)
+
+    def __str__(self):
+        return "%s %s" % (self.urllink, self.urldes)

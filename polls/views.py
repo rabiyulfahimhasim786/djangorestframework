@@ -5,9 +5,9 @@ from django.http import HttpResponse
 
 def index(request):
     return HttpResponse('Hello world!')
-from .models import Pdf
+from .models import Pdf, Outputtext
 from django.contrib.auth.models import User
-from polls.serializers import Pdfserializers
+from polls.serializers import Pdfserializers, Outputtextserializers
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser
 from rest_framework.permissions import IsAuthenticated , AllowAny
@@ -24,6 +24,35 @@ class Userupdate(generics.RetrieveUpdateDestroyAPIView):
 
 
 
+def pdfurl(request):
+    documents = Pdf.objects.all()
+    #rank = Document.objects.latest('id')
+    #print(rank)
+    for obj in documents:
+        rank = obj.link
+        num  =  obj.description
+        #print(rank)
+    print(rank)
+    print(num)
+    ringo = Outputtext.objects.create(urllink=rank, urldes=num)
+    ringo.save()
+    #print(rank[8:-5])
+    #print('/media/'+rank[8:-5]+'.pdf')
+    #pdfkit.from_url(rank, './media/pdf/'+str(num)+'.pdf')
+    #pdfkit.from_url(rank, './media/pdf/'+num+'.pdf')
+    return HttpResponse("Hello, world!"+str(ringo.id))
+
+#outpt create needs then only we need to user create api view 
+#class OutputList(generics.ListCreateAPIView):
+class OutputList(generics.ListAPIView):
+    queryset = Outputtext.objects.all()
+    serializer_class = Outputtextserializers
+    permission_classes = [AllowAny]
+
+class Outputupdate(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Outputtext.objects.all()
+    serializer_class = Outputtextserializers
+    permission_classes = [AllowAny]
 # class profileListapiview(ListAPIView):
 #     queryset = profile.objects.all()
 #     serializer_class = profileserializer
